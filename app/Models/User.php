@@ -29,7 +29,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name', //nuevo campo para el apellido
         'email',
+        'phone_number', //nuevo campo para el número de teléfono
+        'rfc', //nuevo campo para el RFC
+        'curp', //nuevo campo para el CURP
         'password',
     ];
 

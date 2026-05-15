@@ -36,6 +36,12 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_photo_path' => null,
             'current_team_id' => null,
+
+            // Campos adicionales para el registro de clientes
+            'last_name' => fake()->lastName(), // Genera un apellido falso
+            'phone_number' => fake()->phoneNumber(), // Genera un número de teléfono falso
+            'rfc' => fake()->optional()->regexify('[A-Z]{4}[0-9]{6}[A-Z0-9]{3}'), // Genera un RFC falso
+            'curp' => fake()->optional()->regexify('[A-Z]{4}[0-9]{6}[A-Z0-9]{8}'), // Genera un CURP falso
         ];
     }
 
