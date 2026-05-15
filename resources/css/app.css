@@ -7,3 +7,8 @@
 @source "../**/*.blade.php";
 @source "../**/*.js";
 @source "../../app/Livewire/**/*.php";
+
+/* Tallstack UI */
+@import '../../vendor/tallstackui/tallstackui/css/v4.css';
+@plugin '@tailwindcss/forms';
+@source '../../vendor/tallstackui/tallstackui/**/*.php';
