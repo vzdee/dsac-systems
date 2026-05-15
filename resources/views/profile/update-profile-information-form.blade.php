@@ -54,15 +54,19 @@
 
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Name') }}" />
-            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
+            <x-input label="Nombre" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
+        </div>
+
+        {{-- Last Name --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-input label="Apellido" class="mt-1 block w-full" wire:model="state.last_name" required autocomplete="last-name" />
+            <x-input-error for="last_name" class="mt-2" />
         </div>
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="email" value="{{ __('Email') }}" />
-            <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required autocomplete="username" />
+            <x-input label="Correo Electrónico" required autocomplete="username" wire:model="state.email" />
             <x-input-error for="email" class="mt-2" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
@@ -81,6 +85,15 @@
                 @endif
             @endif
         </div>
+        
+        {{-- Phone --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-input label="Teléfono" id="phone" type="text" class="mt-1 block w-full" wire:model="state.phone_number" required autocomplete="phone" x-mask="(999) 999 9999"/>
+            <x-input-error for="phone" class="mt-2" />
+
+        </div>
+
+        {{--  --}}
     </x-slot>
 
     <x-slot name="actions">
@@ -88,8 +101,6 @@
             {{ __('Saved.') }}
         </x-action-message>
 
-        <x-button wire:loading.attr="disabled" wire:target="photo">
-            {{ __('Save') }}
-        </x-button>
+        <x-button type="submit" wire:loading.attr="disabled" text="Guardar"/>
     </x-slot>
 </x-form-section>

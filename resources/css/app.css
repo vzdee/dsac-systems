@@ -12,3 +12,8 @@
 @import '../../vendor/tallstackui/tallstackui/css/v4.css';
 @plugin '@tailwindcss/forms';
 @source '../../vendor/tallstackui/tallstackui/**/*.php';
+
+/* Flowbite */
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";

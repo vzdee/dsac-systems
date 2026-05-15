@@ -23,7 +23,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'last_name' => ['required', 'string', 'max:255'], //validate apellido
-            'phone_number' => ['nullable', 'string', 'max:20'], //validate phone number
+            'phone_number' => ['required', 'string', 'max:20', 'unique:users'], //validate phone number
             'rfc' => ['nullable', 'string', 'max:13'], //validate RFC
             'curp' => ['nullable', 'string', 'max:18'], //validate CURP
             'password' => $this->passwordRules(),
@@ -35,8 +35,8 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'last_name' => $input['last_name'],
             'phone_number' => $input['phone_number'],
-            'rfc' => $input['rfc'],
-            'curp' => $input['curp'],
+            'rfc' => $input['rfc'] ?? null,
+            'curp' => $input['curp'] ?? null,
             'password' => Hash::make($input['password']),
         ]);
     }
