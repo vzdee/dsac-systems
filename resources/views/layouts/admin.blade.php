@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
+    <tallstackui:script /> 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -38,7 +39,7 @@
                 <div class="mb-4">
                     @include('components.admin.breadcrumb')
                 </div>
-                <div class="min-h-[calc(100vh-6rem)] rounded-2xl border border-slate-200 bg-white shadow-sm p-5 sm:p-6">
+                <div class="min-h-[calc(100vh-6rem)]">
                     {{ $slot }}
                 </div>
             </div>
