@@ -20,7 +20,7 @@
                 </div>
     
                 <div>
-                    <x-input label="Telefono" name="phone_number"  x-mask="(999) 999 9999" placeholder="(123) 456 7890" required/>
+                    <x-input label="Telefono" name="phone_number" :value="old('phone_number')" x-mask="(999) 999 9999" placeholder="(123) 456 7890" required/>
                 </div>
 
                 <div>

@@ -13,7 +13,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    <tallstackui:script /> 
+    <tallstackui:script />
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -35,6 +36,8 @@
 
         <!-- Page Content -->
         <main class="min-h-screen pt-16 sm:ml-64">
+            <x-toast />
+            <x-dialog /> 
             <div class="p-4 sm:p-6 lg:p-8">
                 <div class="mb-4">
                     @include('components.admin.breadcrumb')
@@ -50,4 +53,5 @@
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
 </body>
+
 </html>

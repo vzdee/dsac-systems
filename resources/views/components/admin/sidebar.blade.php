@@ -10,7 +10,7 @@
             'name' => 'Empleados',
             'icon' => 'fa-solid fa-users',
             'route' => route('admin.employees.index'),
-            'active' => request()->routeIs('admin.employees.index'),
+            'active' => request()->routeIs('admin.employees.*'),
         ],
         [
             'name' => 'Clientes',
