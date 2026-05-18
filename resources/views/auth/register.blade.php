@@ -39,7 +39,7 @@
 
             </div>
             <div class="mt-6"> 
-                <x-button type="submit" text="Registrarse" class="w-full"/>
+                <x-button type="submit" text="Registrarse" class="w-full" class="tex-" class="w-full font-medium text-[14px]" color="indigo"/>
                 
             </div>
         </form>

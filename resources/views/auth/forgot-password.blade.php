@@ -16,7 +16,7 @@
             @csrf
 
             <div class="block">
-                <x-input label="Correo Electrónico" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="juan.garciap@example.com" />
+                <x-input label="Correo Electrónico *" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="juan.garciap@example.com" />
             </div>
             <div class="flex justify-end mt-6">
                 @if(Route::has('login'))
@@ -27,7 +27,7 @@
             </div>
 
             <div class="mt-6">
-                <x-button type="submit" class="w-full" text="Reestablecer Contraseña" />
+                <x-button type="submit" class="w-full text-[14px] font-medium" text="Reestablecer Contraseña" color="indigo"/>
             </div>
         </form>
     </x-authentication-card>
