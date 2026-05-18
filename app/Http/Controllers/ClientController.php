@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use TallStackUi\Traits\Interactions;
 
-class EmployeeController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class EmployeeController extends Controller
     public function index()
     {
         //
-        return view("admin.employees.index");
+        return view("admin.clients.index");
     }
 
     /**
@@ -26,7 +26,7 @@ class EmployeeController extends Controller
     public function create()
     {
         //
-        return view("admin.employees.create");
+        return view("admin.clients.create");
     }
 
     /**
@@ -34,9 +34,8 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        // convert uppercase for rfc and curp
+        // uppercase for rfc and curp
         $request->merge(['rfc' => strtoupper($request->rfc), 'curp' => strtoupper($request->curp)]);
-
         //validate data
         $data = $request->validate([
             'name' => 'required|string|max:50',
@@ -49,74 +48,77 @@ class EmployeeController extends Controller
         ]);
 
         // create user and assign role
-        $user = User::create($data);
-        $user->assignRole('Contador');
+        $client = User::create($data);
+        $client->assignRole('Cliente');
 
-        // redirect and flash message
+        // redirecto to clients and show success message
         $this->toast()
-            ->success('Creación Exitosa', 'Empleado creado correctamente')
+            ->success('Creación Exitosa', 'Cliente creado correctamente')
             ->flash()
             ->send();
-        return redirect()->route('admin.employees.index');
+        return redirect()->route('admin.clients.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $client)
     {
         //
+        $defaultTab = 'general-information';
+        return view('admin.clients.show', compact('client', 'defaultTab'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $employee)
+    public function edit(User $client)
     {
         //
-        return view("admin.employees.edit", compact('employee'));
+        $defaultTab = 'general-information';
+        return view('admin.clients.edit', compact('client', 'defaultTab'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $employee)
+    public function update(Request $request, User $client)
     {
-        // convert uppercase for rfc and curp
+        //uppercase for rfc and curp
         $request->merge(['rfc' => strtoupper($request->rfc), 'curp' => strtoupper($request->curp)]);
 
         // validate data
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $employee->id,
-            'phone_number' => 'required|string|max:15|unique:users,phone_number,' . $employee->id,
-            'rfc' => 'required|string|min:13|max:13|regex:/^[A-ZÑ&]{4}[0-9]{6}[A-Z0-9]{3}$/|unique:users,rfc,' . $employee->id,
-            'curp' => 'required|string|min:18|max:18|regex:/^[A-Z][AEIOUX][A-Z]{2}[0-9]{6}[HM][A-Z]{5}[A-Z0-9][0-9]$/|unique:users,curp,' . $employee->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $client->id,
+            'phone_number' => 'required|string|max:15|unique:users,phone_number,' . $client->id,
+            'rfc' => 'required|string|min:13|max:13|regex:/^[A-ZÑ&]{4}[0-9]{6}[A-Z0-9]{3}$/|unique:users,rfc,' . $client->id,
+            'curp' => 'required|string|min:18|max:18|regex:/^[A-Z][AEIOUX][A-Z]{2}[0-9]{6}[HM][A-Z]{5}[A-Z0-9][0-9]$/|unique:users,curp,' . $client->id,
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
+        // verify if password is empty
         if (empty($data['password'])) {
             unset($data['password']);
         }
 
-        // find and update user
-        $employee->update($data);
+        // update client
+        $client->update($data);
 
-        // redirect and flash message
+        // redirect to clients and show success message
         $this->toast()
-            ->success('Actualización Exitosa', 'Empleado actualizado correctamente')
+            ->success('Actualización Exitosa', 'Cliente actualizado correctamente')
             ->flash()
             ->send();
-        return redirect()->route('admin.employees.index');
-
+        return redirect()->route('admin.clients.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $employee)
+    public function destroy(string $id)
     {
-        
+        //
     }
 }

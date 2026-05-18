@@ -1,6 +1,6 @@
-<x-admin titleWindow="Dashboard" :breadcrumbs="[
+<x-admin titleWindow="Gestionar Empleados" :breadcrumbs="[
   ['name' => 'Panel Administrador', 'route' => route('admin.dashboard')], 
-  ['name' => 'Empleados']
+  ['name' => 'Gestionar Empleados']
   ]">
     <x-card>
         <x-slot:header>
@@ -10,7 +10,7 @@
           </div>
         </x-slot:header>
         <div class="flex justify-end mr-8 mb-4">
-          <x-button icon="plus" text="Crear Empleado" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.employees.create') }}" />
+          <x-button icon="plus" text="Crear Empleado" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.employees.create') }}" md/>
         </div>
         <livewire:employee-table />
     </x-card>

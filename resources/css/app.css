@@ -43,3 +43,7 @@
  --color-pg-primary-900: oklch(0.205 0 0);
  --color-pg-primary-950: oklch(0.145 0 0);
 }
+
+[x-cloak] {
+    display: none !important;
+}

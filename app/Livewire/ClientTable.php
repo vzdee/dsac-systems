@@ -15,9 +15,9 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use TallStackUi\Traits\Interactions;
 use Livewire\Attributes\On;
 
-final class EmployeeTable extends PowerGridComponent
+final class ClientTable extends PowerGridComponent
 {
-    public string $tableName = 'employeeTable';
+    public string $tableName = 'clientTable';
     use Interactions;
 
     public function setUp(): array
@@ -33,10 +33,9 @@ final class EmployeeTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        // find users with role 'Contador'
-        return User::role('Contador')
+        // find users with role 'Cliente'
+        return User::role('Cliente')
             ->select('users.*');
-        ;
     }
 
     public function fields(): PowerGridFields
@@ -61,7 +60,7 @@ final class EmployeeTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Empleado', 'full_name'),
+            Column::make('Cliente', 'full_name'),
 
             Column::make('Nombre', 'name')
                 ->searchable()
@@ -96,52 +95,58 @@ final class EmployeeTable extends PowerGridComponent
             Button::add('edit')
                 ->id()
                 ->slot('<i class="fa-regular fa-pen-to-square"></i>')
-                ->tooltip('Editar empleado')
+                ->tooltip('Editar cliente')
                 ->class('inline-flex items-center justify-center size-9 rounded-sm bg-indigo-500 text-white transition hover:bg-indigo-600 cursor-pointer')
-                ->route('admin.employees.edit', ['employee' => $row->id]),
+                ->route('admin.clients.edit', ['client' => $row->id]),
 
             Button::add('delete')
                 ->id()
                 ->slot('<i class="fa-regular fa-trash-can"></i>')
-                ->tooltip('Eliminar empleado')
+                ->tooltip('Eliminar cliente')
                 ->class('inline-flex items-center justify-center size-9 rounded-sm bg-red-500 text-white transition hover:bg-red-600 cursor-pointer')
-                ->dispatch('confirmEmployee', ['employee' => $row->id]),
+                ->dispatch('confirmClient', ['client' => $row->id]),
+            Button::add('view')
+                ->id()
+                ->slot('<i class="fa-regular fa-eye"></i>')
+                ->tooltip('Ver cliente')
+                ->class('inline-flex items-center justify-center size-9 rounded-sm bg-green-500 text-white transition hover:bg-green-600 cursor-pointer')
+                ->route('admin.clients.show', ['client' => $row->id])
         ];
     }
 
-    // Confirm delete employee
-    #[On('confirmEmployee')]
-    public function confirmEmployee($employee)
-    {
+    // confirm delete client
+    #[on('confirmClient')]
+    public function confirmClient($client){
         $this->dialog()
-            ->question('Eliminar Empleado', '¿Estás seguro de eliminar este empleado? Esta acción no se puede deshacer.')
-            ->confirm('Eliminar', 'deleteEmployee', $employee)
+            ->question('Eliminar Cliente', '¿Estás seguro de eliminar este cliente? Esta acción no se puede deshacer')
+            ->confirm('Eliminar', 'deleteClient', $client)
             ->cancel('Cancelar')
             ->send();
     }
 
-    public function deleteEmployee($employee)
-    {
-        // find employee by id
-        $employee = User::findOrFail($employee);
+    // delete client
+    public function deleteClient($client){
+        $client = User::findOrFail($client);
 
-        // validate if employee is logged in 
-        if ($employee->id === Auth::user()->id) {
+        // validate if client is logged in
+        if($client->id === Auth::user()->id){
             $this->dialog()
-                ->error('Ocurrió un error', 'No puedes eliminar tu propio usuario.')
+                ->error('Error', 'No puedes eliminar tu propio usuario')
                 ->send();
             return;
         }
 
-        // detach roles and delete employee
-        $employee->roles()->detach();
-        $employee->delete();
+        // detach roles and delete client
+        $client->roles()->detach();
+        $client->delete();
 
+        // show success message
         $this->toast()
-            ->success('Empleado Eliminado', 'Empleado eliminado correctamente')
+            ->success('Cliente Eliminado', 'El cliente ha sido eliminado correctamente')
+            ->flash()
             ->send();
+
         // refresh table
         $this->dispatch('$refresh');
-
     }
 }

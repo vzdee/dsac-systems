@@ -7,17 +7,27 @@
             'active' => request()->routeIs('admin.dashboard'),
         ],
         [
-            'name' => 'Empleados',
-            'icon' => 'fa-solid fa-users',
+            'name' => 'Gestionar Empleados',
+            'icon' => 'fa-solid fa-user-tie',
             'route' => route('admin.employees.index'),
             'active' => request()->routeIs('admin.employees.*'),
         ],
         [
-            'name' => 'Clientes',
-            'icon' => 'fa-solid fa-user-group',
+            'name' => 'Gestionar Clientes',
+            'icon' => 'fa-solid fa-user-gear',
+            'route' => route('admin.clients.index'),
+            'active' => request()->routeIs('admin.clients.*'),
+        ],[
+            'name' => 'Gestionar Citas',
+            'icon' => 'fa-solid fa-calendar-day',
             'route' => '#',
-            'active' => false,
-        ],
+             'active' => false,
+        ],[
+            'name' => 'Configurar Servicios',
+            'icon' => 'fa-solid fa-screwdriver-wrench',
+            'route' => '#',
+             'active' => false,
+        ]
     ];
 @endphp
 

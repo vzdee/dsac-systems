@@ -1,14 +1,13 @@
-<x-admin titleWindow="Dashboard" :breadcrumbs="[
+<x-admin titleWindow="Crear Cliente" :breadcrumbs="[
     ['name' => 'Panel Administrador', 'route' => route('admin.dashboard')],
-    ['name' => 'Gestionar Empleados', 'route' => route('admin.employees.index')],
-    ['name' => 'Crear Empleado']
+    ['name' => 'Clientes', 'route' => route('admin.clients.index')],
+    ['name' => 'Crear Cliente'],
 ]">
     <x-card>
         <x-slot:header>
-            <h2 class="text-3xl font-semibold leading-tight text-gray-800">Crear Nuevo Empleado</h2>
+            <h2 class="text-3xl font-semibold leading-tight text-gray-800">Crear Cliente</h2>
         </x-slot:header>
-
-        <form action="{{ route('admin.employees.store') }}" method="POST">
+        <form action="{{ route('admin.clients.store') }}" method="POST">
             @csrf
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
@@ -45,9 +44,8 @@
                 </div>
             </div>
             <div class="mt-6">
-                <x-button type="submit" text="Crear Empleado" color="indigo" class="font-semibold text-[14px]" />
+                <x-button type="submit" text="Crear Cliente" color="indigo" class="font-semibold text-[14px]" />
             </div>
         </form>
     </x-card>
-
 </x-admin>
