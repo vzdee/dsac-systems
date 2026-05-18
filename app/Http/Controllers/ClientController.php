@@ -48,8 +48,9 @@ class ClientController extends Controller
         ]);
 
         // create user and assign role
-        $client = User::create($data);
-        $client->assignRole('Cliente');
+        $user = User::create($data);
+        $user->assignRole('Cliente');
+        $user->client()->firstorCreate();
 
         // redirecto to clients and show success message
         $this->toast()

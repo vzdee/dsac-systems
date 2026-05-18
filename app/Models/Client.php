@@ -12,10 +12,18 @@ class Client extends Model
         'person_type', //fisica o moral
         'fiscal_regime',
         'economic_activity',
-        'cfdi',
+        'cfdi_use',
         'address',
         'zip_code',
         'status', // activo o inactivo
         'notes', // cualquier información adicional sobre el cliente
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function appointments(){
+        return $this->hasMany(Appointment::class);
+    }
 }

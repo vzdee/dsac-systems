@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('person_type')->nullable(); 
             $table->string('fiscal_regime')->nullable();
             $table->string('economic_activity')->nullable();
-            $table->string('cfdi')->nullable();
+            $table->string('cfdi_use')->nullable();
             $table->string('address')->nullable();
             $table->string('zip_code', 10)->nullable();
             $table->string('status')->default('active');

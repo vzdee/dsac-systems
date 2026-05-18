@@ -16,4 +16,21 @@ class Appointment extends Model
         'price', 
         'notes', 
     ];
+
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+        'price' => 'decimal:2',
+    ];
+
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
+
+    public function accountant(){
+        return $this->belongsTo(Accountant::class);
+    }
+
+    public function service(){
+        return $this->belongsTo(Service::class);
+    }
 }

@@ -51,6 +51,7 @@ class EmployeeController extends Controller
         // create user and assign role
         $user = User::create($data);
         $user->assignRole('Contador');
+        $user->accountant()->firstOrCreate();
 
         // redirect and flash message
         $this->toast()
