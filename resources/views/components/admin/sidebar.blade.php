@@ -25,8 +25,8 @@
         ],[
             'name' => 'Configurar Servicios',
             'icon' => 'fa-solid fa-screwdriver-wrench',
-            'route' => '#',
-             'active' => false,
+            'route' => route('admin.services.index'),
+             'active' => request()->routeIs('admin.services.*'),
         ]
     ];
 @endphp
