@@ -102,16 +102,24 @@
                         <span class="{{ $summaryLabel }}">Estado del Servicio:</span>
                         @switch($status)
                             @case('Pendiente')
-                                <span class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-700">Pendiente</span>
+                                <span
+                                    class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-700">Pendiente</span>
                             @break
+
                             @case('Confirmada')
-                                <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">Confirmada</span>
+                                <span
+                                    class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">Confirmada</span>
                             @break
+
                             @case('Cancelada')
-                                <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700"> Cancelada</span>
+                                <span
+                                    class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                    Cancelada</span>
                             @break
+
                             @case('Completada')
-                                <span class="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700">Completada</span>
+                                <span
+                                    class="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700">Completada</span>
                             @break
                         @endswitch
                     </div>
@@ -123,14 +131,17 @@
                         <div class="mt-0.5 text-red-500">
                             <i class="fa-solid fa-circle-info"></i>
                         </div>
-                        <p class="text-sm leading-relaxed text-red-500">El precio se calculará automáticamente desde la base de datos según el tipo de servicio seleccionado.</p>
+                        <p class="text-sm leading-relaxed text-red-500">El precio se calculará automáticamente desde la
+                            base de datos según el tipo de servicio seleccionado.</p>
                     </div>
                 </div>
 
                 {{-- Botones --}}
                 <div class="mt-6 flex flex-col gap-3">
-                    <x-button type="submit" text="Confirmar Cita" form="appointmentForm" color="indigo" class="w-full text-sm" />
-                    <x-button href="{{ route('admin.appointments.index') }}" text="Cancelar" color="gray" class="w-full text-sm" outline />
+                    <x-button type="submit" :text="$appointment ? 'Guardar Cambios' : 'Confirmar Cita'" form="appointmentForm" color="indigo"
+                        class="w-full text-sm" />
+                    <x-button href="{{ route('admin.appointments.index') }}" text="Cancelar" color="gray"
+                        class="w-full text-sm" outline />
                 </div>
             </div>
         </div>
@@ -143,8 +154,8 @@
                     <div class="flex p-5 items-center justify-evenly gap-4 rounded-xl bg-indigo-100 text-indigo-500">
                         <div><i class="fa-regular fa-clipboard text-4xl"></i></div>
                         <div>
-                            <h2 class="text-2xl font-semibold text-indigo-800">Detalles de la cita</h2>
-                            <p class="text-sm text-indigo-600">Completa el formulario para crear una nueva cita.</p>
+                            <h2 class="text-2xl font-semibold text-indigo-800">{{ $appointment ? 'Editar detalles de la cita' : 'Detalles de la cita' }}</h2>
+                            <p class="text-sm text-indigo-600">{{ $appointment ? 'Actualiza la información de la cita seleccionada.' : 'Completa el formulario para crear una nueva cita.' }}</p>
                         </div>
                     </div>
                 </div>
@@ -152,7 +163,8 @@
 
                     {{-- Empleado --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1"> Empleado <span class="text-red-600">*</span> </label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1"> Empleado <span
+                                class="text-red-600">*</span> </label>
                         <select wire:model.live="accountant_id" class="{{ $selectClass }}">
                             <option value="">Selecciona un empleado para la cita</option>
                             @foreach ($accountants as $accountant)
@@ -169,7 +181,8 @@
 
                     {{-- Cliente --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1"> Cliente <span class="text-red-600">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1"> Cliente <span
+                                class="text-red-600">*</span></label>
                         <select wire:model.live="client_id" class="{{ $selectClass }}">
                             <option value="">Selecciona un cliente</option>
                             @foreach ($clients as $client)
@@ -185,7 +198,8 @@
 
                     {{-- Servicio --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1"> Servicio <span class="text-red-600">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1"> Servicio <span
+                                class="text-red-600">*</span></label>
                         <select wire:model.live="service_id" class="{{ $selectClass }}">
                             <option value="">Selecciona un servicio</option>
                             @foreach ($services as $service)
@@ -217,7 +231,8 @@
 
                     {{-- Estado --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1"> Estado <span class="text-red-600">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1"> Estado <span
+                                class="text-red-600">*</span></label>
                         <select wire:model.live="status" class="{{ $selectClass }}">
                             <option value="Pendiente">Pendiente</option>
                             <option value="Confirmada">Confirmada</option>
@@ -233,8 +248,7 @@
 
                 {{-- Notas --}}
                 <div>
-                    <x-textarea label="Notas adicionales" wire:model="description" rows="4"
-                        class="resize-none"
+                    <x-textarea label="Notas adicionales" wire:model="description" rows="4" class="resize-none"
                         placeholder="Escribe alguna observación de la situación del cliente, este campo es opcional..." />
                     @error('description')
                         <p class="text-xs text-red-500 mt-1">{{ $message }}</p>

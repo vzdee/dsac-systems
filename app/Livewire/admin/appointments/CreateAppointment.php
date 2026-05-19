@@ -23,16 +23,30 @@ class CreateAppointment extends Component
 
   public $status = 'Pendiente';
   public $description = '';
+  public ?Appointment $appointment = null;
 
   public $accountants;
   public $clients;
   public $services;
 
-  public function mount()
+  public function mount(?Appointment $appointment = null)
   {
     $this->accountants = Accountant::with('user')->get();
     $this->clients = Client::with('user')->get();
     $this->services = Service::all();
+
+    if ($appointment && $appointment->exists) {
+      $this->appointment = $appointment;
+      $this->accountant_id = $appointment->accountant_id;
+      $this->client_id = $appointment->client_id;
+      $this->service_id = $appointment->service_id;
+
+      $this->scheduled_date = $appointment->scheduled_at->format('Y-m-d');
+      $this->scheduled_time = $appointment->scheduled_at->format('h:i A');
+
+      $this->status = $appointment->status;
+      $this->description = $appointment->description;
+    }
   }
 
   public function formattedDate()
@@ -59,7 +73,7 @@ class CreateAppointment extends Component
       'accountant_id' => 'required|exists:accountants,id',
       'client_id' => 'required|exists:clients,id',
       'service_id' => 'required|exists:services,id',
-      'scheduled_date' => 'required|date|after_or_equal:today',
+      'scheduled_date' => $this->appointment ? 'required|date' : 'required|date|after_or_equal:today',
       'scheduled_time' => 'required',
       'status' => 'required|in:Pendiente,Confirmada,Cancelada,Completada',
       'description' => 'nullable|string|max:1000',
@@ -74,14 +88,14 @@ class CreateAppointment extends Component
 
     $scheduledAt = Carbon::parse($this->scheduled_date . ' ' . $this->scheduled_time);
 
-    if ($scheduledAt->lessThanOrEqualTo(now())) {
+    if (!$this->appointment && $scheduledAt->lessThanOrEqualTo(now())) {
       $this->addError('scheduled_time', 'La fecha y hora de la cita no pueden ser anteriores a la hora actual.');
       return;
     }
 
     $service = Service::findOrFail($this->service_id);
 
-    Appointment::create([
+    $data = [
       'accountant_id' => $this->accountant_id,
       'client_id' => $this->client_id,
       'service_id' => $this->service_id,
@@ -89,15 +103,25 @@ class CreateAppointment extends Component
       'status' => $this->status,
       'description' => $this->description,
       'price' => $service->price ?? 0,
-    ]);
+    ];
 
-    $this->toast()
-      ->success('Cita Creada', 'La cita se ha creado correctamente')
-      ->flash()
-      ->send();
+    if ($this->appointment) {
+      $this->appointment->update($data);
 
-    return redirect()
-      ->route('admin.appointments.index');
+      $this->toast()
+        ->success('Cita Actualizada', 'La cita se ha actualizado correctamente')
+        ->flash()
+        ->send();
+    } else {
+      Appointment::create($data);
+
+      $this->toast()
+        ->success('Cita Creada', 'La cita se ha creado correctamente')
+        ->flash()
+        ->send();
+    }
+
+    return redirect()->route('admin.appointments.index');
   }
 
   public function render()
