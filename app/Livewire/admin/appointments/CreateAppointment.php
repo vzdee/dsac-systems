@@ -13,13 +13,13 @@ use TallStackUi\Traits\Interactions;
 class CreateAppointment extends Component
 {
   use Interactions;
-  
+
   public $accountant_id = '';
   public $client_id = '';
   public $service_id = '';
 
   public $scheduled_date = '';
-  public $scheduled_time = '8:00 AM';
+  public $scheduled_time = '10:00 AM';
 
   public $status = 'Pendiente';
   public $description = '';
@@ -33,7 +33,6 @@ class CreateAppointment extends Component
     $this->accountants = Accountant::with('user')->get();
     $this->clients = Client::with('user')->get();
     $this->services = Service::all();
-
   }
 
   public function formattedDate()
@@ -60,15 +59,27 @@ class CreateAppointment extends Component
       'accountant_id' => 'required|exists:accountants,id',
       'client_id' => 'required|exists:clients,id',
       'service_id' => 'required|exists:services,id',
-      'scheduled_date' => 'required|date',
+      'scheduled_date' => 'required|date|after_or_equal:today',
       'scheduled_time' => 'required',
       'status' => 'required|in:Pendiente,Confirmada,Cancelada,Completada',
       'description' => 'nullable|string|max:1000',
+    ], [
+      'accountant_id.required' => 'Selecciona un empleado para la cita.',
+      'client_id.required' => 'Selecciona un cliente para la cita.',
+      'service_id.required' => 'Selecciona un servicio.',
+      'scheduled_date.required' => 'Selecciona la fecha de la cita.',
+      'scheduled_date.after_or_equal' => 'La fecha de la cita no puede ser anterior al día de hoy.',
+      'scheduled_time.required' => 'Selecciona la hora de la cita.',
     ]);
 
-    $service = Service::findOrFail($this->service_id);
-
     $scheduledAt = Carbon::parse($this->scheduled_date . ' ' . $this->scheduled_time);
+
+    if ($scheduledAt->lessThanOrEqualTo(now())) {
+      $this->addError('scheduled_time', 'La fecha y hora de la cita no pueden ser anteriores a la hora actual.');
+      return;
+    }
+
+    $service = Service::findOrFail($this->service_id);
 
     Appointment::create([
       'accountant_id' => $this->accountant_id,

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
