@@ -10,9 +10,9 @@
           </div>
         </x-slot:header>
         <div class="flex justify-end mr-8 mb-4">
-          <x-button icon="plus" text="Crear Empleado" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.employees.create') }}" md/>
+          <x-button icon="plus" text="Crear Nuevo Empleado" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.employees.create') }}" md/>
         </div>
-        <livewire:employee-table />
+        <livewire:admin.employee-table />
     </x-card>
 
 

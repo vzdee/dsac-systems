@@ -11,9 +11,9 @@
           </div>
         </x-slot:header>
         <div class="flex justify-end mr-8 mb-4">
-          <x-button icon="plus" text="Crear Cliente" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.clients.create') }}" md/>
+          <x-button icon="plus" text="Crear Nuevo Cliente" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.clients.create') }}" md/>
         </div>
 
-        <livewire:client-table />
+        <livewire:admin.client-table />
     </x-card>
 </x-admin>

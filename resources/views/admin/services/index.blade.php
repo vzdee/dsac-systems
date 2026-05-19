@@ -14,6 +14,6 @@
           <x-button icon="plus" text="Crear Nuevo Servicio" color="indigo" class="font-semibold text-[14px]" href="{{ route('admin.services.create') }}" md/>
         </div>
 
-        <livewire:service-table />
+        <livewire:admin.service-table />
     </x-card>
 </x-admin>

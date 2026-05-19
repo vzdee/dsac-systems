@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ServiceController;
@@ -18,4 +19,6 @@ Route::resource('clients', ClientController::class);
 // Services
 Route::resource('services', ServiceController::class);
 
+// Appointments
+Route::resource('appointments', AppointmentController::class);
 ?>

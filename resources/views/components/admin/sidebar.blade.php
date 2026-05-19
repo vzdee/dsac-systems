@@ -20,8 +20,8 @@
         ],[
             'name' => 'Gestionar Citas',
             'icon' => 'fa-solid fa-calendar-day',
-            'route' => '#',
-             'active' => false,
+            'route' => route('admin.appointments.index'),
+             'active' => request()->routeIs('admin.appointments.*'),
         ],[
             'name' => 'Configurar Servicios',
             'icon' => 'fa-solid fa-screwdriver-wrench',

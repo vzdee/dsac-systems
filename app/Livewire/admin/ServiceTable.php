@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use App\Models\Service;
 use Illuminate\Support\Carbon;
@@ -97,7 +97,7 @@ final class ServiceTable extends PowerGridComponent
     #[On('confirmService')]
     public function confirmService($service){
         $this->dialog()
-            ->question('Eliminar Servicio', '¿Estás seguro de eliminar este empleado? Esta acción no se puede deshacer.')
+            ->question('Eliminar Servicio', '¿Estás seguro de eliminar este servicio? Esta acción no se puede deshacer.')
             ->confirm('Eliminar', 'deleteService', $service)
             ->cancel('Cancelar')
             ->send();
