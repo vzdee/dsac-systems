@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,15 +13,16 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('person_type')->nullable(); 
-            $table->string('fiscal_regime')->nullable();
+            $table->string('person_type')->nullable();
+            $table->char('fiscal_regime', 3)->nullable();
             $table->string('economic_activity')->nullable();
-            $table->string('cfdi_use')->nullable();
-            $table->string('address')->nullable();
-            $table->string('zip_code', 10)->nullable();
+            $table->char('cfdi_use', 4)->nullable();
+            $table->text('address')->nullable();
+            $table->string('zip_code', 5)->nullable();
             $table->string('status')->default('Activo');
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

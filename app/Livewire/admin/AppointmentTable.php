@@ -140,7 +140,7 @@ final class AppointmentTable extends PowerGridComponent
     public function confirmService($appointment)
     {
         $this->dialog()
-            ->question('¿Estás seguro de eliminar este servicio?')
+            ->question('Eliminar Cita', 'Estas seguro de que deseas eliminar esta cita?')
             ->confirm('Eliminar', 'deleteService', $appointment)
             ->cancel('Cancelar')
             ->send();

@@ -26,7 +26,8 @@ class ClientController extends Controller
     public function create()
     {
         //
-        return view("admin.clients.create");
+        $defaultTab = 'general-information';
+        return view("admin.clients.create", compact('defaultTab'));
     }
 
     /**
@@ -45,12 +46,44 @@ class ClientController extends Controller
             'rfc' => 'required|string|min:13|max:13|regex:/^[A-ZÑ&]{4}[0-9]{6}[A-Z0-9]{3}$/|unique:users',
             'curp' => 'required|string|min:18|max:18|regex:/^[A-Z][AEIOUX][A-Z]{2}[0-9]{6}[HM][A-Z]{5}[A-Z0-9][0-9]$/|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            // validate client data
+            'person_type' => 'nullable|in:Persona Física,Persona Moral',
+            'fiscal_regime' => 'nullable|size:3|in:601,603,605,606,612,626',
+            'economic_activity' => 'nullable|in:Servicios profesionales,Comercio al por menor,Restaurantes y cafeterías,Servicios de tecnología,Arrendamiento de inmuebles,Otro',
+            'cfdi_use' => 'nullable|max:4|in:G01,G02,G03,I01,I02,I03,I04,D01,D10,S01,CP01',
+            'address' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|digits:5',
+            'status' => 'nullable|in:Activo,Inactivo,Pendiente,Suspendido',
+            'notes' => 'nullable|string|max:255',
         ]);
 
+        // user data
+        $userData = [
+            'name' => $data['name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'rfc' => $data['rfc'],
+            'curp' => $data['curp'],
+            'password' => $data['password'],
+        ];
+
+        // client data
+        $clientData = [
+            'person_type' => $data['person_type'] ?? null,
+            'fiscal_regime' => $data['fiscal_regime'] ?? null,
+            'economic_activity' => $data['economic_activity'] ?? null,
+            'cfdi_use' => $data['cfdi_use'] ?? null,
+            'address' => $data['address'] ?? null,
+            'zip_code' => $data['zip_code'] ?? null,
+            'status' => $data['status'] ?? 'Activo',
+            'notes' => $data['notes'] ?? null,
+        ];
+
         // create user and assign role
-        $user = User::create($data);
+        $user = User::create($userData);
         $user->assignRole('Cliente');
-        $user->client()->firstorCreate();
+        $user->client()->Create($clientData);
 
         // redirecto to clients and show success message
         $this->toast()
@@ -99,15 +132,48 @@ class ClientController extends Controller
             'rfc' => 'required|string|min:13|max:13|regex:/^[A-ZÑ&]{4}[0-9]{6}[A-Z0-9]{3}$/|unique:users,rfc,' . $client->id,
             'curp' => 'required|string|min:18|max:18|regex:/^[A-Z][AEIOUX][A-Z]{2}[0-9]{6}[HM][A-Z]{5}[A-Z0-9][0-9]$/|unique:users,curp,' . $client->id,
             'password' => 'nullable|string|min:8|confirmed',
+            // validate client data
+            'person_type' => 'nullable|in:Persona Física,Persona Moral',
+            'fiscal_regime' => 'nullable|size:3|in:601,603,605,606,612,626',
+            'economic_activity' => 'nullable|in:Servicios profesionales,Comercio al por menor,Restaurantes y cafeterías,Servicios de tecnología,Arrendamiento de inmuebles,Otro',
+            'cfdi_use' => 'nullable|max:4|in:G01,G02,G03,I01,I02,I03,I04,D01,D10,S01,CP01',
+            'address' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|digits:5',
+            'status' => 'nullable|in:Activo,Inactivo,Pendiente,Suspendido',
+            'notes' => 'nullable|string|max:255',
         ]);
 
-        // verify if password is empty
-        if (empty($data['password'])) {
-            unset($data['password']);
+        // user data
+        $userData = [
+            'name' => $data['name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'rfc' => $data['rfc'],
+            'curp' => $data['curp'],
+        ];
+
+        // update password only if it was provided
+        if (!empty($data['password'])) {
+            $userData['password'] = $data['password'];
         }
 
+        // client data
+        $clientData = [
+            'person_type' => $data['person_type'] ?? null,
+            'fiscal_regime' => $data['fiscal_regime'] ?? null,
+            'economic_activity' => $data['economic_activity'] ?? null,
+            'cfdi_use' => $data['cfdi_use'] ?? null,
+            'address' => $data['address'] ?? null,
+            'zip_code' => $data['zip_code'] ?? null,
+            'status' => $data['status'] ?? 'Activo',
+            'notes' => $data['notes'] ?? null,
+        ];
+
         // update client
-        $client->update($data);
+        $client->update($userData);
+        $client->client()->updateOrCreate(['user_id' => $client->id], $clientData);
+
 
         // redirect to clients and show success message
         $this->toast()

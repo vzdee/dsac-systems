@@ -57,7 +57,7 @@
 
                 <x-tabs-link tab="documents">
                     <i class="fa-solid fa-file me-2"></i>
-                    <span>Documentos</span>
+                    <span>Documentos Relacionados</span>
                 </x-tabs-link>
 
                 <x-tabs-link tab="appointments">
@@ -77,10 +77,14 @@
 
 
             <x-tab-content tab="fiscal-information">
-                <x-detail-field label="Uso del CFDI: " :value="$client->cfdi_use" />
-                <x-detail-field label="Dirección: " :value="$client->address" />
-                <x-detail-field label="Código Postal: " :value="$client->zip_code" />
-                <x-detail-field label="Status" :value="$client->status" />
+                <x-detail-field label="Tipo de Persona: " :value="$client->client->person_type" />
+                <x-detail-field label="Régimen Fiscal: " :value="$client->client->fiscal_regime" />
+                <x-detail-field label="Actividad Económica: " :value="$client->client->economic_activity" />
+                <x-detail-field label="Uso del CFDI: " :value="$client->client->cfdi_use" />
+                <x-detail-field label="Dirección: " :value="$client->client->address" />
+                <x-detail-field label="Código Postal: " :value="$client->client->zip_code" />
+                <x-detail-field label="Status" :value="$client->client->status" />
+                <x-detail-field label="Notas: " :value="$client->client->notes" />
             </x-tab-content>
 
             <x-tab-content tab="documents">
@@ -99,11 +103,10 @@
                                 <div>
                                     <p class="font-semibold text-gray-800">{{ $appointment->service?->name ?? 'Sin servicio' }}</p>
                                     <p class="mt-1 text-sm text-gray-500">Contador: {{ $appointment->accountant?->user?->name ?? 'Sin contador' }} {{ $appointment->accountant?->user?->last_name ?? '' }}</p>
-                                    <p class="mt-1 text-sm text-gray-500">Fecha:{{ $appointment->scheduled_at ? \Carbon\Carbon::parse($appointment->scheduled_at)->format('d/m/Y h:i A') : '--' }} </p>
+                                    <p class="mt-1 text-sm text-gray-500">Fecha:{{ $appointment->scheduled_at ? \Carbon\Carbon::parse($appointment->scheduled_at)->format('d M Y h:i A') : '--' }} </p>
+                                    <p class="mt-1 text-sm text-gray-500">Costo de la cita: ${{ $appointment->price ?? 'Sin precio' }} MXN</p>
                                 </div>
-                                <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
-                                    {{ $appointment->status }}
-                                </span>
+                                <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">{{ $appointment->status }}</span>
                             </div>
                         </div>
                     @empty
