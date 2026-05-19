@@ -1,14 +1,16 @@
 @props(['active'])
 <div x-data="{ tab: '{{ $active }}' }" class="w-full">
     @isset($header)
-        <div class="border-b border-gray-200 overflow-x-auto">
-            <ul class="flex flex-nowrap -mb-px text-sm font-medium text-center text-gray-500 min-w-max">
-                {{ $header }}
-            </ul>
+        <div class="mb-6 border-b border-gray-200">
+            <div class="overflow-x-auto md:overflow-visible">
+                <ul class="flex w-max gap-6 text-sm font-medium text-gray-500 md:w-full md:flex-wrap">
+                    {{ $header }}
+                </ul>
+            </div>
         </div>
     @endisset
 
-    <div class="pt-6">
+    <div class="pt-1">
         {{ $slot }}
     </div>
 </div>

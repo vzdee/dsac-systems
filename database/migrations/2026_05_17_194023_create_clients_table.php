@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('cfdi_use')->nullable();
             $table->string('address')->nullable();
             $table->string('zip_code', 10)->nullable();
-            $table->string('status')->default('active');
+            $table->string('status')->default('Activo');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -67,7 +67,9 @@ class ClientController extends Controller
     {
         //
         $defaultTab = 'general-information';
-        return view('admin.clients.show', compact('client', 'defaultTab'));
+        $client->load(['client.appointments.accountant.user', 'client.appointments.service',]);
+        $appointments = $client->client?->appointments ?? collect();
+        return view('admin.clients.show', compact('client', 'defaultTab', 'appointments'));
     }
 
     /**

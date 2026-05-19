@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accountant;
+use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -37,16 +38,17 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Service $service)
+    public function show(Appointment $appointment)
     {
         //
-        return view('admin.appointments.show')->with('service', $service);
+        $defaultTab = 'client-information';
+        return view('admin.appointments.show')->with('appointment', $appointment)->with('defaultTab', $defaultTab);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Service $service)
+    public function edit(Appointment $appointment)
     {
         //
     }
@@ -54,7 +56,7 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Appointment $appointment)
     {
         //
     }
@@ -62,7 +64,7 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(Appointment $appointment)
     {
         //
     }
