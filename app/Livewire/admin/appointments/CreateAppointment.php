@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Appointments;
 
+use App\Mail\AppointmentCreatedMail;
 use App\Models\Accountant;
 use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\Service;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
 
@@ -22,7 +24,7 @@ class CreateAppointment extends Component
   public $scheduled_time = '10:00 AM';
 
   public $status = 'Pendiente';
-  public $description = '';
+  public $notes = '';
   public ?Appointment $appointment = null;
 
   public $accountants;
@@ -41,11 +43,11 @@ class CreateAppointment extends Component
       $this->client_id = $appointment->client_id;
       $this->service_id = $appointment->service_id;
 
-      $this->scheduled_date = $appointment->scheduled_at->format('Y-m-d');
+      $this->scheduled_date = $appointment->scheduled_at->format('d M Y');
       $this->scheduled_time = $appointment->scheduled_at->format('h:i A');
 
       $this->status = $appointment->status;
-      $this->description = $appointment->description;
+      $this->notes = $appointment->notes;
     }
   }
 
@@ -55,7 +57,7 @@ class CreateAppointment extends Component
       return '--';
     }
 
-    return Carbon::parse($this->scheduled_date)->format('d/m/Y');
+    return Carbon::parse($this->scheduled_date)->format('d M Y');
   }
 
   public function formattedTime()
@@ -76,7 +78,7 @@ class CreateAppointment extends Component
       'scheduled_date' => $this->appointment ? 'required|date' : 'required|date|after_or_equal:today',
       'scheduled_time' => 'required',
       'status' => 'required|in:Pendiente,Confirmada,Cancelada,Completada',
-      'description' => 'nullable|string|max:1000',
+      'notes' => 'nullable|string|max:1000',
     ], [
       'accountant_id.required' => 'Selecciona un empleado para la cita.',
       'client_id.required' => 'Selecciona un cliente para la cita.',
@@ -101,7 +103,7 @@ class CreateAppointment extends Component
       'service_id' => $this->service_id,
       'scheduled_at' => $scheduledAt,
       'status' => $this->status,
-      'description' => $this->description,
+      'notes' => $this->notes,
       'price' => $service->price ?? 0,
     ];
 
@@ -113,14 +115,14 @@ class CreateAppointment extends Component
         ->flash()
         ->send();
     } else {
-      Appointment::create($data);
-
+      $appointment = Appointment::create($data);
+      $appointment->load('client.user', 'accountant.user', 'service');
+      Mail::to($appointment->client->user->email)->send(new AppointmentCreatedMail($appointment));
       $this->toast()
         ->success('Cita Creada', 'La cita se ha creado correctamente')
         ->flash()
         ->send();
     }
-
     return redirect()->route('admin.appointments.index');
   }
 

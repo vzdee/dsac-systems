@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AppointmentPdfController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ServiceController;
@@ -21,4 +22,7 @@ Route::resource('services', ServiceController::class);
 
 // Appointments
 Route::resource('appointments', AppointmentController::class);
+
+Route::get('/appointments/{appointment}/pdf', [AppointmentPdfController::class, 'download'])
+  ->name('appointments.pdf');
 ?>

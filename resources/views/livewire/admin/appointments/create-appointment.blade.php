@@ -215,7 +215,7 @@
 
                     {{-- Fecha --}}
                     <div>
-                        <x-date label="Fecha *" wire:model.live="scheduled_date" format="DD/MM/YYYY" />
+                        <x-date label="Fecha *" wire:model.live="scheduled_date" format="DD/MM/YYYY" :min-date="now()"/>
                         @error('scheduled_date')
                             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                         @enderror
@@ -248,9 +248,9 @@
 
                 {{-- Notas --}}
                 <div>
-                    <x-textarea label="Notas adicionales" wire:model="description" rows="4" class="resize-none"
+                    <x-textarea label="Notas adicionales" wire:model="notes" rows="4" class="resize-none"
                         placeholder="Escribe alguna observación de la situación del cliente, este campo es opcional..." />
-                    @error('description')
+                    @error('notes')
                         <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                     @enderror
                 </div>

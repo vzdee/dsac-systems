@@ -107,6 +107,9 @@
                                     <p class="mt-1 text-sm text-gray-500">Costo de la cita: ${{ $appointment->price ?? 'Sin precio' }} MXN</p>
                                 </div>
                                 <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">{{ $appointment->status }}</span>
+                                <div>
+                                    <a href="{{ route('admin.appointments.pdf', $appointment) }}" class="px-4 py-2 bg-red-700 text-white rounded-lg">Generar PDF</a>
+                                </div>
                             </div>
                         </div>
                     @empty
