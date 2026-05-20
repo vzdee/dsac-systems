@@ -10,6 +10,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'role:Cliente',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');

@@ -11,6 +11,13 @@ Route::get('/dashboard', function () {
   return view('admin.dashboard');
 })->name('dashboard');
 
+// define routes for role 'Administrador' and 'Contador'
+Route::middleware('role:Administrador')->group(function () {
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('clients', ClientController::class);
+});
+
 // Employees
 Route::resource('employees', EmployeeController::class);
 

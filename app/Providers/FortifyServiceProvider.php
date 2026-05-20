@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -21,7 +22,23 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, function () {
+            return new class implements LoginResponseContract {
+                public function toResponse($request)
+                {
+                    $user = $request->user();
+                    $redirect = null;
+
+                    if ($user && $user->hasRole('Cliente')) {
+                        $redirect = route('dashboard');
+                    } elseif ($user && $user->hasAnyRole(['Administrador', 'Contador'])) {
+                        $redirect = route('admin.dashboard');
+                    }
+
+                    return redirect()->intended($redirect ?? route('login'));
+                }
+            };
+        });
     }
 
     /**
