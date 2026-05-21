@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\Appointments;
 
-use App\Mail\AppointmentCreatedMail;
+use App\Events\AppointmentCreated;
+use App\Events\AppointmentUpdated;
 use App\Models\Accountant;
 use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\Service;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use TallStackUi\Traits\Interactions;
 
@@ -110,14 +110,15 @@ class CreateAppointment extends Component
     if ($this->appointment) {
       $this->appointment->update($data);
 
+      AppointmentUpdated::dispatch($this->appointment);
+
       $this->toast()
         ->success('Cita Actualizada', 'La cita se ha actualizado correctamente')
         ->flash()
         ->send();
     } else {
       $appointment = Appointment::create($data);
-      $appointment->load('client.user', 'accountant.user', 'service');
-      Mail::to($appointment->client->user->email)->send(new AppointmentCreatedMail($appointment));
+      AppointmentCreated::dispatch($appointment);
       $this->toast()
         ->success('Cita Creada', 'La cita se ha creado correctamente')
         ->flash()

@@ -15,7 +15,7 @@ class AppointmentPdfService
             'service',
         ]);
 
-        return Pdf::loadView('emails.appointment-confirmation', [
+        return Pdf::loadView('emails.appointment-receipt', [
             'appointment' => $appointment,
         ])->setPaper('letter');
     }
